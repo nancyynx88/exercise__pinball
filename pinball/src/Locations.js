@@ -1,14 +1,17 @@
 import React from 'react';
-import Box from '@mui/material/Box';
+import './Locations.css';
 
 export default function Locations({ locations }) {
+  console.log("Locations in component in locations.js:", locations); 
+
   return (
-    <Box>
+    <div className="locations-container">
       {locations.map((location, index) => (
-        <Box key={index}>
+        <div key={index} className="location-item">
+          {/* Display location details here */}
           <div>{location.name}</div>
-        </Box>
+        </div>
       ))}
-    </Box>
+    </div>
   );
 }

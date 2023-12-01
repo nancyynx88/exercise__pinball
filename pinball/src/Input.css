@@ -1,0 +1,18 @@
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Creates space between each item */
+    margin: 20px 0; /* Adds space above and below the input container */
+  }
+  
+  .input-container > * {
+    width: 100%; /* Full width */
+    max-width: 300px; /* Maximum width, adjust as needed */
+  }
+  
+  @media (max-width: 600px) {
+    .input-container {
+      gap: 10px;
+    }
+  }
