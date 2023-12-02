@@ -1,20 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Locations from './Locations';
 import Input from './Input';
 import Typography from '@mui/material/Typography';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 import './App.css';
 
 function App() {
   const [locations, setLocations] = useState([]);
   const [error, setError] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
+
+  useEffect(() => {
+    // Function to fetch current location and load initial data
+    const fetchInitialData = async () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const { latitude, longitude } = position.coords;
+          await fetchLocations(latitude, longitude);
+        }, (error) => {
+          console.error("Error getting location: ", error);
+          setError('Unable to retrieve your location');
+          setOpenDialog(true);
+        });
+      } else {
+        setError('Geolocation is not supported by this browser');
+        setOpenDialog(true);
+      }
+    };
+
+    fetchInitialData();
+  }, []);
 
   const fetchLocations = async (latitude, longitude) => {
     setError(''); // Clear existing error
+    setOpenDialog(false); // Ensure dialog is closed before starting new fetch
+    
     if (!latitude || !longitude) {
       setError('Latitude and longitude are required');
+      setOpenDialog(true); // Open dialog to show error
       return;
     }
-
+  
     try {
       // Fetch the closest region based on latitude and longitude
       const regionResponse = await fetch(
@@ -24,7 +55,7 @@ function App() {
         throw new Error(`HTTP error! status: ${regionResponse.status}`);
       }
       const regionData = await regionResponse.json();
-
+  
       // Fetch locations in the found region
       if (regionData && regionData.region && regionData.region.name) {
         const locationsResponse = await fetch(
@@ -40,8 +71,14 @@ function App() {
       }
     } catch (error) {
       setError(`Error fetching locations: ${error.message}`);
+      setOpenDialog(true); // Open dialog to show error
       console.error('Error: ', error);
     }
+  };
+  
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false); // Function to close the dialog
   };
 
   return (
@@ -64,7 +101,24 @@ function App() {
         <Locations locations={locations} />
       </div>
 
-      {error && <div>Error: {error}</div>}
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Error"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {error}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary" autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
