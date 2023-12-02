@@ -9,6 +9,7 @@ function App() {
   const [error, setError] = useState('');
 
   const fetchLocations = async (latitude, longitude) => {
+    setError(''); // Clear existing error
     if (!latitude || !longitude) {
       setError('Latitude and longitude are required');
       return;
@@ -17,9 +18,7 @@ function App() {
     try {
       // Fetch the closest region based on latitude and longitude
       const regionResponse = await fetch(
-        `https://pinballmap.com/api/v1/regions/closest_by_lat_lon.json?lat=${encodeURIComponent(
-          latitude
-        )}&lon=${encodeURIComponent(longitude)}`
+        `https://pinballmap.com/api/v1/regions/closest_by_lat_lon.json?lat=${encodeURIComponent(latitude)}&lon=${encodeURIComponent(longitude)}`
       );
       if (!regionResponse.ok) {
         throw new Error(`HTTP error! status: ${regionResponse.status}`);
@@ -37,7 +36,7 @@ function App() {
         const locationsData = await locationsResponse.json();
         setLocations(locationsData.locations);
       } else {
-        throw new Error('Region data is not available');
+        throw new Error('Region data is not available. Please check your coordinates and try again.');
       }
     } catch (error) {
       setError(`Error fetching locations: ${error.message}`);
