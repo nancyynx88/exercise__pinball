@@ -1,4 +1,4 @@
-.app-container {
+.App-container {
   text-align: center;
 }
 
@@ -14,7 +14,7 @@
 
 /* Responsive styles */
 @media (max-width: 600px) {
-  .app-container {
+  .App-container {
     padding: 10px;
   }
   button {
@@ -28,8 +28,7 @@
 
 
 .App-container {
-  background-color: #282c34;
-  min-height: 100vh;
+  min-height: 30vh;
   display: -webkit-flex; /* Safari */
   display: flex;
   -webkit-flex-direction: column; /* Safari */
@@ -37,7 +36,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
 }
 
 .App-link {
@@ -49,4 +48,7 @@
   pointer-events: none;
   -webkit-animation: App-logo-spin infinite 20s linear; /* Safari and Chrome */
   animation: App-logo-spin infinite 20s linear;
+}
+.locations-container{
+  align-items: center;
 }

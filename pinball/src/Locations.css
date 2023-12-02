@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px;
+    margin: 20px auto;
     padding: 20px;
     border: 1px solid #ccc; /* Visible border */
     border-radius: 10px; /* Rounded corners */
@@ -15,4 +15,17 @@
   .location-item {
     margin-bottom: 10px;
   }
+  .locations-title {
+    text-align: center;
+    margin-bottom: 20px; 
+  }
+  @media (max-width: 600px) {
+    .locations-container {
+      padding: 10px;
+      max-width: 100%;
+    }
   
+    .locations-title {
+      font-size: 1rem; /* Smaller font size on smaller screens */
+    }
+  }
